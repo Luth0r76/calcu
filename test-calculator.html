@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .calculator {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .result span {
+            font-size: 24px;
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>JOSE ACADEMY 🤖</h1>
+        <h2>Calculadora de Examen Tipo Test</h2>
+        
+        <div class="input-group">
+            <label for="total">Número total de preguntas:</label>
+            <input type="number" id="total" value="60">
+        </div>
+        
+        <div class="input-group">
+            <label for="correct">Aciertos:</label>
+            <input type="number" id="correct" value="0">
+        </div>
+        
+        <div class="input-group">
+            <label for="incorrect">Fallos:</label>
+            <input type="number" id="incorrect" value="0">
+        </div>
+        
+        <div class="input-group">
+            <label for="blank">En blanco:</label>
+            <input type="number" id="blank" value="0">
+        </div>
+        
+        <div class="input-group">
+            <label for="penalty">Penalización por fallo (por defecto 1/3):</label>
+            <input type="number" id="penalty" value="0.333" step="0.001">
+        </div>
+        
+        <button onclick="calculateGrade()">Calcular Nota</button>
+        
+        <div class="result">
+            Nota final: <span id="result">-</span>
+        </div>
+    </div>
+
+    <script>
+        function calculateGrade() {
+            const total = parseFloat(document.getElementById('total').value);
+            const correct = parseFloat(document.getElementById('correct').value);
+            const incorrect = parseFloat(document.getElementById('incorrect').value);
+            const blank = parseFloat(document.getElementById('blank').value);
+            const penalty = parseFloat(document.getElementById('penalty').value);
+            
+            // Validaciones
+            if (correct + incorrect + blank !== total) {
+                alert('Error: La suma de aciertos, fallos y preguntas en blanco debe ser igual al total de preguntas');
+                return;
+            }
+            
+            // Cálculo de la nota
+            const score = correct - (incorrect * penalty);
+            const finalGrade = (score * 10) / total;
+            
+            // Mostrar resultado redondeado a 2 decimales
+            document.getElementById('result').textContent = 
+                Math.max(0, Math.min(10, finalGrade)).toFixed(2);
+        }
+
+        // Validar que los números sean positivos
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value < 0) this.value = 0;
+            });
+        });
+    </script>
+</body>
+</html>
